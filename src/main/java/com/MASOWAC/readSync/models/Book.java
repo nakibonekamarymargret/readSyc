@@ -22,6 +22,13 @@ public class Book {
     @ManyToMany(mappedBy="borrowedBooks")
     private Set<Reader> readers = new HashSet<>();
 
+//    Many to one relationship between the book amd publisher
+//    Many books can be published by one publisher
+//    Foriegn key to publisher
+    @ManyToOne
+    @JoinColumn(name="publisher_id", nullable= false)
+    private Publisher publisher;
+
     public Book(){}
     public Book(String title,String author, String isbn, int publishedYear,boolean available ){
         this.title = title;
@@ -73,10 +80,23 @@ public class Book {
         this.available = available;
     }
 
+    public Publisher getPublisher(){
+        return publisher;
+    }
+    public void setPublisher(Publisher publisher){
+        this.publisher =publisher;
+    }
+
+    public Set<Reader>getReader(){
+        return readers;
+    }
+    public void setReaders(Set<Reader>readers){
+        this.readers=readers;
+    }
     public String toString(){
         return String.format(
-                "Book[id = %d, title ='%s', author ='%s', isbn ='%s', publishedYear =%d, available=%b]",
-                id,title,author,isbn,publishedYear,available
+                "Book[id = %d, title ='%s', author ='%s', isbn ='%s', publishedYear =%d, available=%b,publisher='%s']",
+                id,title,author,isbn,publishedYear,available,publisher.getPublisherName()
                 );
     }
 
