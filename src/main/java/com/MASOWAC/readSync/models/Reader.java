@@ -1,8 +1,7 @@
 package com.MASOWAC.readSync.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,21 +15,26 @@ public class Reader {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Column(name="first_name", unique = true )
+    @NotBlank(message= "First name is required")
+    @Column(name="first_name" )
     private String firstName;
 
+    @NotBlank(message= "First name is required")
     @Column(nullable = false,name="last_name")
     private String lastName;
 
-    @Column(nullable = false,name="email",unique = true)
+    @NotBlank(message= "Email is required and can not be empty")
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+            flags = Pattern.Flag.CASE_INSENSITIVE,
+            message="Enter a valid email address"
+    )
     private String email;
 
-    @NotNull
+    @NotBlank(message = "enter your address please")
     @Column(name="address")
     private String address;
 
-    @NotNull
+    @NotBlank(message="Phone number is required")
     @Size(max=17)
     @Column(name="phone_number", unique = true)
     private String phoneNumber;
@@ -89,7 +93,7 @@ public class Reader {
         return phoneNumber;
     }
     public void setPhoneNumber(String phoneNumber){
-        this.address= phoneNumber;
+        this.phoneNumber= phoneNumber;
     }
 
     public String toString(){
