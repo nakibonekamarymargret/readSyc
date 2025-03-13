@@ -64,7 +64,10 @@ public Manage removeBook(Long staffId, Long bookId) {
         throw new ResourceNotFoundException("Staff or Book not found!");
     }
 }
-//
+//Get All managed books
+    public List<Manage>getManagedBooks(Long staffId){
+    return manageRepository.findAllStaffById(staffId);
+    }
 }
 
 
