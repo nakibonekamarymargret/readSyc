@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PubisherService {
+public class PublisherService {
     private final PublisherRepository publisherRepository;
 
-    public PubisherService(PublisherRepository publisherRepository){
+    public PublisherService(PublisherRepository publisherRepository){
         this . publisherRepository = publisherRepository;
     }
 

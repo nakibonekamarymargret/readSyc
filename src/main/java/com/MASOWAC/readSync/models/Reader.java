@@ -64,10 +64,9 @@ public class Reader {
     public void setId(Long id){
         this.id =id;
     }
-     public String getFirstName(){
+    public String getFirstName(){
         return firstName;
-     }
-     public void setFirstName(String firstName){
+     }public void setFirstName(String firstName){
         this.firstName = firstName;
      }
      public String getLastName(){

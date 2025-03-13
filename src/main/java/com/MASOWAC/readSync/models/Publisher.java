@@ -16,7 +16,6 @@ import java.util.Set;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     private String publisherName;
     @NotNull(message ="Publication date can not be null")

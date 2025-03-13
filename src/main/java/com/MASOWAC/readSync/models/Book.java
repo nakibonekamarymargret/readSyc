@@ -26,7 +26,7 @@ public class Book {
 //    Many books can be published by one publisher
 //    Foriegn key to publisher
     @ManyToOne
-    @JoinColumn(name="publisher_id", nullable= false)
+    @JoinColumn(name = "publisher_id", nullable = false) // Ensure column name matches
     private Publisher publisher;
 
     public Book(){}
