@@ -1,6 +1,7 @@
 package com.MASOWAC.readSync.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -29,7 +30,8 @@ public class Book {
 //    Foriegn key to publisher
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "publisher_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
+//    @JsonIgnore
     private Publisher publisher;
 
     public Book(){}

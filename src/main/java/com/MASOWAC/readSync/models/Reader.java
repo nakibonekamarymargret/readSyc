@@ -24,6 +24,7 @@ public class Reader {
     private String lastName;
 
     @NotBlank(message= "Email is required and can not be empty")
+    //the Pattern.Flag.CASE_INSENSITIVE,ignores the case sensitivity
     @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
             flags = Pattern.Flag.CASE_INSENSITIVE,
             message="Enter a valid email address"
@@ -43,8 +44,7 @@ public class Reader {
 //    Many to many between books and readers ie a reader can borrow many books
 //    and a book can be borrowed by many readers
     @ManyToMany
-    @JoinTable(
-            name = "book_borrow",
+    @JoinTable(name = "book_borrow",
             joinColumns = @JoinColumn(name = "readers_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id"))
     private Set<Book> borrowedBooks = new HashSet<>();

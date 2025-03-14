@@ -1,12 +1,14 @@
 package com.MASOWAC.readSync.services;
 
 import com.MASOWAC.readSync.dto.ReaderResponse;
+import com.MASOWAC.readSync.exceptions.ReaderNotFoundException;
 import com.MASOWAC.readSync.models.Reader;
 import com.MASOWAC.readSync.repository.ReaderRepository;
 import com.MASOWAC.readSync.specifications.ReaderSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class ReaderService {
     private final ReaderRepository readerRepository;
+    private HashMap<String, Object> response ;
 
     public ReaderService(ReaderRepository readerRepository){
         this.readerRepository =readerRepository;
@@ -83,7 +86,14 @@ public Reader updateReader(Long id,  Reader readerDetails){
 
 }
 //Deleting a reader
-    public void deleteReader(Long id){
-       readerRepository.deleteById(id);
+public Reader deleteReader(Long id) {
+    Optional<Reader> reader = readerRepository.findById(id);
+    if (reader.isPresent()) {
+        readerRepository.deleteById(id);
+        return reader.get(); // Return the deleted Reader object
+    } else {
+        throw new ReaderNotFoundException("Reader not found with id " + id);
     }
+}
+
 }

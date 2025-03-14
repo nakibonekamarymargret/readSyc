@@ -32,7 +32,7 @@ public class Publisher {
 //    A book is published by only one publisher
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
     public Publisher(){}
@@ -42,12 +42,14 @@ public class Publisher {
      public void setId(Long id){
         this.id=id;
      }
+
     public Publisher(String publisherName){
         this.publisherName= publisherName;
     }
     public String getPublisherName(){
         return publisherName;
     }
+
     public void setPublisherName(String publisherName){
         this.publisherName=publisherName;
     }

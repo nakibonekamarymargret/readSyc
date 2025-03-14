@@ -6,6 +6,7 @@ import com.MASOWAC.readSync.services.ReaderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,9 +28,20 @@ public List<ReaderResponse> getAllReaders() {
         return readerService.searchReaderByField(field, value);
     }
     //create reader
-    @PostMapping("/create")
+    @PostMapping("/add-reader")
     public ResponseEntity<Reader>createReader(@RequestBody Reader reader){
         return ResponseEntity.ok(readerService.createReader(reader));
     }
 //Update reader
+    @PutMapping("/edit_reader")
+    public ResponseEntity<Reader>updateReader(@PathVariable Long id, @RequestBody Reader readerDetails){
+        return ResponseEntity.ok(readerService.updateReader(id,readerDetails));
+    }
+
+//    Delete reader
+public ResponseEntity<Reader> deleteReader(@PathVariable Long id) {
+    Reader deletedReader = readerService.deleteReader(id);
+    return ResponseEntity.ok(deletedReader);
+}
+
 }

@@ -20,11 +20,16 @@ public class GlobalExceptionHandler {
     public ApiResponse<Object> handleGeneralException(Exception ex, HttpServletRequest request) {
         return ResponseUtil.error(List.of(ex.getMessage()), "An unexpected error occurred", 1001, request.getRequestURI());
     }
+//Handle ReaderNotFoundException
+    @ExceptionHandler(ReaderNotFoundException.class)
+    public ApiResponse<Object> handleReaderNotFoundException(ReaderNotFoundException ex, HttpServletRequest request) {
+        return ResponseUtil.error(List.of(ex.getMessage()), "Resource not found", 404, request.getRequestURI());
+    }
 
     // Handle resource not found exceptions
     @ExceptionHandler(ResourceNotFoundException.class)
     public ApiResponse<Object> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
-        return ResponseUtil.error(List.of(ex.getMessage()), "Resource not found", 404, request.getRequestURI());
+        return ResponseUtil.error(List.of(ex.getMessage()), "Reader not found", 404, request.getRequestURI());
     }
 
     // Handle response not found exceptions
