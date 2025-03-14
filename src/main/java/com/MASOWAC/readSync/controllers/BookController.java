@@ -62,7 +62,7 @@ public class BookController {
     }
 //    Get book by title
     @GetMapping("/{title}")
-    public ResponseEntity<Map<String,Object>>grtBookByTitle(@PathVariable String title){
+    public ResponseEntity<Map<String,Object>>getBookByTitle(@PathVariable String title){
         Optional<Book> book = bookService.getBookByTitle(title);
         Map<String,Object>response =new HashMap<>();
         if (book.isPresent()) {
@@ -157,6 +157,10 @@ public class BookController {
             response.put("message", "Failed to delete book");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("/publisher/{publisherId}")
+    public ResponseEntity<List<Book>> getBooksByPublisher(@PathVariable Long publisherId) {
+        return ResponseEntity.ok(bookService.getBooksByPublisher(publisherId));
     }
 //        public void deleteBook(@PathVariable Long Id){
 //        bookService.deleteBook(Id);

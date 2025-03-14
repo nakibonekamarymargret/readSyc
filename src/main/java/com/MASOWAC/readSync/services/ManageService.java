@@ -66,7 +66,7 @@ public Manage removeBook(Long staffId, Long bookId) {
 }
 //Get All managed books
     public List<Manage>getManagedBooks(Long staffId){
-    return manageRepository.findAllStaffById(staffId);
+    return manageRepository.findAllByStaffId(staffId);
     }
 }
 

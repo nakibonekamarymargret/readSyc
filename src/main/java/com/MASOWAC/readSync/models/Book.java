@@ -1,5 +1,6 @@
 package com.MASOWAC.readSync.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -8,7 +9,8 @@ import java.util.Set;
 @Entity
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @SequenceGenerator(name = "book_seq", sequenceName = "book_id_seq", allocationSize = 1)
     private Long id;
     private String title;
     private String author;
@@ -25,8 +27,9 @@ public class Book {
 //    Many to one relationship between the book amd publisher
 //    Many books can be published by one publisher
 //    Foriegn key to publisher
-    @ManyToOne
-    @JoinColumn(name = "publisher_id", nullable = false) // Ensure column name matches
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "publisher_id", nullable = false)
+    @JsonBackReference
     private Publisher publisher;
 
     public Book(){}
@@ -76,7 +79,7 @@ public class Book {
     public boolean getAvailable(){
         return available;
     }
-    public void setAvailable(boolean author){
+    public void setAvailable(boolean available){
         this.available = available;
     }
 

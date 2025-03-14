@@ -1,7 +1,9 @@
 package com.MASOWAC.readSync.services;
 
 import com.MASOWAC.readSync.models.Book;
+import com.MASOWAC.readSync.models.Publisher;
 import com.MASOWAC.readSync.repository.BookRepository;
+import com.MASOWAC.readSync.repository.PublisherRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +11,29 @@ import java.util.Optional;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
 
-    public BookService(BookRepository bookRepository){
+    public BookService(BookRepository bookRepository, PublisherRepository publisherRepository){
         this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
 
     }
     //Creating a book
-    public Book createBook(Book book){
+    public Book createBook(Book book) {
+        if (book.getPublisher() == null || book.getPublisher().getId() == null) {
+            throw new IllegalArgumentException("Publisher ID cannot be null");
+        }
+
+        Optional<Publisher> publisherOptional = publisherRepository.findById(book.getPublisher().getId());
+        if (publisherOptional.isEmpty()) {
+            throw new IllegalArgumentException("Publisher not found with ID: " + book.getPublisher().getId());
+        }
+
+        book.setPublisher(publisherOptional.get()); // Set the fetched Publisher object
         return bookRepository.save(book);
     }
+
+
     //Return all books
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
@@ -67,5 +83,8 @@ public class BookService {
 
     public Optional<Book> getBookByTitle(String title) {
         return bookRepository.findByTitle(title);
+    }
+    public List<Book> getBooksByPublisher(Long publisherId) {
+        return bookRepository.findByPublisherId(publisherId);
     }
 }

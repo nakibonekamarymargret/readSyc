@@ -10,7 +10,7 @@ public class Manage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long managementId; // Primary Key
+    private Long id; // Primary Key
 
     @ManyToOne
     @JoinColumn(name = "staff_id", nullable = false)
@@ -37,12 +37,12 @@ public class Manage {
     }
 
     // Getters and Setters
-    public Long getManagementId() {
-        return managementId;
+    public Long getId() {
+        return id;
     }
 
-    public void setManagementId(Long managementId) {
-        this.managementId = managementId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Staff getStaff() {
@@ -81,8 +81,8 @@ public class Manage {
     @Override
     public String toString() {
         return "Manage{" +
-                "managementId=" + managementId +
-                ", staff=" + (staff != null ? staff.getId() : "null") +
+                "id=" + id +
+                ", staff=" + (staff != null ? staff.getStaffId() : "null") +
                 ", book=" + (book != null ? book.getId() : "null") +
                 ", operationType=" + operationType +
                 ", managementDate=" + managementDate +
@@ -95,7 +95,7 @@ public class Manage {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Manage manage = (Manage) obj;
-        return Objects.equals(managementId, manage.managementId) &&
+        return Objects.equals(id, manage.id) &&
                 Objects.equals(staff, manage.staff) &&
                 Objects.equals(book, manage.book) &&
                 operationType == manage.operationType &&
@@ -105,6 +105,6 @@ public class Manage {
     // HashCode Method for Object Hashing
     @Override
     public int hashCode() {
-        return Objects.hash(managementId, staff, book, operationType, managementDate);
+        return Objects.hash(id, staff, book, operationType, managementDate);
     }
 }

@@ -57,7 +57,7 @@ public class Reports {
     public String toString() {
         return "Reports{" +
                 "id=" + id +
-                ", staff=" + (staff != null ? staff.getId() : "null") + // Avoids potential null reference
+                ", staff=" + (staff != null ? staff.getStaffId() : "null") + // Avoids potential null reference
                 ", reportContent='" + reportContent + '\'' +
                 ", reportDate=" + reportDate +
                 '}';

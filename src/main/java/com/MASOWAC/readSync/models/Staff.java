@@ -16,9 +16,8 @@ uniqueConstraints=@UniqueConstraint(columnNames={"loginId","email"})
 public class Staff {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-
-    private Long id;
-
+    @Column(name = "staff_id") // Explicitly naming it to avoid confusion
+    private Long staffId;
     @Column(nullable= false)
     private String loginId;
 
@@ -65,11 +64,11 @@ public class Staff {
         this.contact = contact;
     }
 
-    public Long getId(){
-        return id;
+    public Long getStaffId(){
+        return staffId;
     }
-    public void setId(Long id){
-        this.id =id;
+    public void setStaffId(Long id){
+        this.staffId =staffId;
     }
 
     public String getLoginId(){
@@ -138,8 +137,8 @@ public class Staff {
     @Override
     public String toString(){
         return String.format(
-                "Staff[id=%d,loginId='%s',firstName='%s',lastName='%s',email='%s',password='%s',contact='%s']",
-                id,loginId, firstName,lastName,email,password,contact
+                "Staff[staffId=%d,loginId='%s',firstName='%s',lastName='%s',email='%s',password='%s',contact='%s']",
+                staffId,loginId, firstName,lastName,email,password,contact
         );
     }
 

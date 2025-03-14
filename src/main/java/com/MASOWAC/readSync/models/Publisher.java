@@ -1,5 +1,7 @@
 package com.MASOWAC.readSync.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +20,7 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String publisherName;
-    @NotNull(message ="Publication date can not be null")
+    @NotNull(message = "Publication date can not be null")
     @Column(name = "publication_date", nullable = false)
     private Date publicationDate;
     @CreationTimestamp
@@ -30,10 +32,16 @@ public class Publisher {
 //    A book is published by only one publisher
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Book> books = new HashSet<>();
 
     public Publisher(){}
-
+     public Long getId(){
+        return id;
+     }
+     public void setId(Long id){
+        this.id=id;
+     }
     public Publisher(String publisherName){
         this.publisherName= publisherName;
     }
@@ -51,6 +59,12 @@ public class Publisher {
         this.createdAt= createdAt;
     }
 
+    public Date getPublicationDate(){
+        return publicationDate;
+    }
+    public void setPublicationDate(Date publicationDate){
+        this.publicationDate=publicationDate;
+    }
     public Timestamp getUpdatedAt(){
         return updatedAt;
     }
