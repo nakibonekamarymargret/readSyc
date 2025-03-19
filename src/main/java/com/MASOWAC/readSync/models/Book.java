@@ -3,6 +3,8 @@ package com.MASOWAC.readSync.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +15,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
     @SequenceGenerator(name = "book_seq", sequenceName = "book_id_seq", allocationSize = 1)
     private Long id;
+    @NotBlank(message ="Book title cant be blank")
     private String title;
     private String author;
     private String isbn;
+    @Size(min=4, max=4)
     private int publishedYear;
     private boolean available;
 
@@ -26,8 +30,9 @@ public class Book {
     private Set<Reader> readers = new HashSet<>();
 
 //    Many to one relationship between the book amd publisher
-//    Many books can be published by one publisher
-//    Foriegn key to publisher
+//    Many books are  published by one publisher
+//     @JoinColumn when a book is created, it is assigned to its publisher
+
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "publisher_id", nullable = false)
 //    @JsonBackReference

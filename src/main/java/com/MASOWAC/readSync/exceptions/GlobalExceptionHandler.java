@@ -1,62 +1,38 @@
 package com.MASOWAC.readSync.exceptions;
 
-import com.MASOWAC.readSync.dto.ApiResponse;
-import com.MASOWAC.readSync.util.ResponseUtil;
+
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolationException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle generic exceptions
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<Object> handleGeneralException(Exception ex, HttpServletRequest request) {
-        return ResponseUtil.error(List.of(ex.getMessage()), "An unexpected error occurred", 1001, request.getRequestURI());
-    }
+  
 //Handle ReaderNotFoundException
-    @ExceptionHandler(ReaderNotFoundException.class)
-    public ApiResponse<Object> handleReaderNotFoundException(ReaderNotFoundException ex, HttpServletRequest request) {
-        return ResponseUtil.error(List.of(ex.getMessage()), "Resource not found", 404, request.getRequestURI());
+
+//     Handle book not found exception
+
+    @ExceptionHandler(NoBookFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNoBookFoundException(NoBookFoundException ex, HttpServletRequest request) {
+        Map<String, Object> response = new LinkedHashMap<>(); // Preserves order
+        response.put("status", "failure");
+        response.put("statusCode", HttpStatus.NOT_FOUND.value());
+        response.put("message", ex.getMessage());
+        response.put("path", request.getRequestURI());
+        response.put("timestamp", System.currentTimeMillis());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+    // Handle 404 errors (Invalid URL)
 
-    // Handle resource not found exceptions
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ApiResponse<Object> handleResourceNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
-        return ResponseUtil.error(List.of(ex.getMessage()), "Reader not found", 404, request.getRequestURI());
-    }
-
-    // Handle response not found exceptions
-    @ExceptionHandler(ResponseNotFoundException.class)
-    public ApiResponse<Object> handleResponseNotFoundException(ResponseNotFoundException ex, HttpServletRequest request) {
-        return ResponseUtil.error(List.of(ex.getMessage()), "Response data not found", 204, request.getRequestURI());
-    }
-
-    // **Handle validation errors (MethodArgumentNotValidException)**
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<Object> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        List<String> errors = ex.getBindingResult().getAllErrors()
-                .stream()
-                .map(error -> ((FieldError) error).getDefaultMessage())
-                .collect(Collectors.toList());
-
-        return ResponseUtil.error(errors, "Validation error", 400, request.getRequestURI());
-    }
-
-    // **Handle ConstraintViolationException (for @NotNull, @Size, etc.)**
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ApiResponse<Object> handleConstraintViolationException(ConstraintViolationException ex, HttpServletRequest request) {
-        List<String> errors = ex.getConstraintViolations()
-                .stream()
-                .map(violation -> violation.getMessage())
-                .collect(Collectors.toList());
-
-        return ResponseUtil.error(errors, "Validation error", 400, request.getRequestURI());
-    }
 }
+

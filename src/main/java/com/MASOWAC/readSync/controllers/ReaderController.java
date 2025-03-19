@@ -14,19 +14,13 @@ import java.util.Map;
 @RequestMapping("/readers")
 public class ReaderController {
     private final ReaderService readerService;
-
+    private HashMap<String,Object> response;
     public ReaderController(ReaderService readerService) {
         this.readerService = readerService;
     }
 //Get all Readers
 @GetMapping
-public List<ReaderResponse> getAllReaders() {
-    return readerService.getAllReaders();
-}
-    @GetMapping("/search")
-    public List<Reader> searchReader(@RequestParam String field, @RequestParam String value) {
-        return readerService.searchReaderByField(field, value);
-    }
+
     //create reader
     @PostMapping("/add-reader")
     public ResponseEntity<Reader>createReader(@RequestBody Reader reader){

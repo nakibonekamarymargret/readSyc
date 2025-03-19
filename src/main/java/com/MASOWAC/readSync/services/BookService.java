@@ -1,9 +1,13 @@
 package com.MASOWAC.readSync.services;
 
+import com.MASOWAC.readSync.exceptions.NoBookFoundException;
 import com.MASOWAC.readSync.models.Book;
 import com.MASOWAC.readSync.models.Publisher;
 import com.MASOWAC.readSync.repository.BookRepository;
 import com.MASOWAC.readSync.repository.PublisherRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -20,16 +24,6 @@ public class BookService {
     }
     //Creating a book
     public Book createBook(Book book) {
-        if (book.getPublisher() == null || book.getPublisher().getId() == null) {
-            throw new IllegalArgumentException("Publisher ID cannot be null");
-        }
-
-        Optional<Publisher> publisherOptional = publisherRepository.findById(book.getPublisher().getId());
-        if (publisherOptional.isEmpty()) {
-            throw new IllegalArgumentException("Publisher not found with ID: " + book.getPublisher().getId());
-        }
-
-        book.setPublisher(publisherOptional.get()); // Set the fetched Publisher object
         return bookRepository.save(book);
     }
 
@@ -39,10 +33,19 @@ public class BookService {
         return bookRepository.findAll();
     }
     //Returning an optional/one id
-    public Optional<Book> getBooKById(Long Id){
-        return bookRepository.findById(Id) ;
+    public Book getBooKById(Long id) throws NoBookFoundException {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new NoBookFoundException("Book not found with Id: " + id));
     }
-//    Updating and patching books
+
+//    Sorting and pagination
+//    public Page<Book>findAll(Pageable pageable){
+//        return bookRepository.findAll(pageable);
+//    }
+    public Page<Book> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable); // This returns a paginated result
+    }
+    //    Updating and patching books
     public Book updateBook(Long Id, Book bookDetails) {
         try {
         return bookRepository.findById(Id).map(book -> {
@@ -87,4 +90,12 @@ public class BookService {
     public List<Book> getBooksByPublisher(Long publisherId) {
         return bookRepository.findByPublisherId(publisherId);
     }
+
+//    Delete student by id
+
+
+
+
+
+
 }

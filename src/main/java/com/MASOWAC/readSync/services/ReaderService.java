@@ -4,7 +4,6 @@ import com.MASOWAC.readSync.dto.ReaderResponse;
 import com.MASOWAC.readSync.exceptions.ReaderNotFoundException;
 import com.MASOWAC.readSync.models.Reader;
 import com.MASOWAC.readSync.repository.ReaderRepository;
-import com.MASOWAC.readSync.specifications.ReaderSpecification;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -27,38 +26,11 @@ public class ReaderService {
         return readerRepository.save(reader);
     }
 //    Return all users
-//    public List<Reader> getAllReaders(){
-//        return readerRepository.findAll();
-//    }
-//    public Optional<Reader> getReaderById(Long id){
-//        return readerRepository.findById(id);
-//    }
-//    public Optional<Reader>getReaderByEmail(){
-//        return readerRepository.findReaderByEmail();
-//    }
-//    public Optional<Reader> getReaderByFirstName(String firstName){
-//        return readerRepository.findReaderByFirstName();
-//    }
-//    public Optional<Reader> getReaderByLastName(String firstName){
-//        return readerRepository.findReaderByLasttName();
-//    }
-////
-public List<Reader> searchReaderByField(String field, String value) {
- Specification<Reader> specification = ReaderSpecification.byField(field, value);
-   return specification != null ? readerRepository.findAll(specification) : List.of();
-}
-public List<ReaderResponse> getAllReaders() {
-    List<Reader> readers = readerRepository.findAll();
-    return readers.stream()
-            .map(reader -> new ReaderResponse(
-                    reader.getId(),
-                    reader.getFirstName(),
-                    reader.getLastName(),
-                    reader.getEmail(),
-                    reader.getPhoneNumber(),
-                    reader.getAddress()))
-            .collect(Collectors.toList());
-}
+    public List<Reader> getAllReaders(){
+        return readerRepository.findAll();
+    }
+
+
 public Reader updateReader(Long id,  Reader readerDetails){
         try{
             return readerRepository.findById(id).map(reader ->{

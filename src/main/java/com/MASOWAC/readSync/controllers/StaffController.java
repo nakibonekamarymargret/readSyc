@@ -1,8 +1,6 @@
 package com.MASOWAC.readSync.controllers;
 
 import com.MASOWAC.readSync.models.Staff;
-import com.MASOWAC.readSync.repository.StaffRepository;
-import com.MASOWAC.readSync.services.ManageService;
 import com.MASOWAC.readSync.services.StaffService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

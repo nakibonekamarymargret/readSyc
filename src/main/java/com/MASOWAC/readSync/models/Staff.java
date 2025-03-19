@@ -2,8 +2,6 @@ package com.MASOWAC.readSync.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import com.MASOWAC.readSync.models.Manage;
-import com.MASOWAC.readSync.models.Reports;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -39,8 +37,7 @@ public class Staff {
     private String contact;
 
 //    One to many between staff and books
-    @OneToMany(mappedBy="staff")
-    private Set<Manage> managedBooks = new HashSet<>();
+
 //One staff generates multiple reports
     @OneToMany(mappedBy ="staff")
     private Set<Reports>reports = new HashSet<>();
@@ -113,12 +110,6 @@ public class Staff {
         this.contact= contact;
     }
 
-   public Set<Manage>getManagedBooks(){
-        return managedBooks;
-   }
-   public void setManagedBooks(Set<Manage>managedBooks){
-        this.managedBooks= managedBooks;
-   }
 
     public Set<Reader>getReader(){
         return readers;
