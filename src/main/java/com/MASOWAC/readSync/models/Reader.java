@@ -40,6 +40,8 @@ public class Reader {
     @Column(name="phone_number", unique = true)
     private String phoneNumber;
 
+//    @Transient indicates that a field is not permanently stored in the database
+
     //    Relationships
 //    Many to many between books and readers ie a reader can borrow many books
 //    and a book can be borrowed by many readers
@@ -87,7 +89,6 @@ public class Reader {
     public void setAddress(String address){
         this.address= address;
     }
-
     public String getPhoneNumber(){
         return phoneNumber;
     }
@@ -95,11 +96,21 @@ public class Reader {
         this.phoneNumber= phoneNumber;
     }
 
+    public Set<Book>getBorrowedBooks(){
+        return borrowedBooks ;
+
+
+    }
+    public void setBorrowedBooks(Set<Book> borrowedBooks){
+        this.borrowedBooks=borrowedBooks;
+    }
+
     public String toString(){
         return String.format(
-                "Reader[id=%d,firstName='%s',lastName='%s',email='%s',address='%s',phoneNumber='%s']",
-                id, firstName,lastName,email,address,phoneNumber
+                "Reader[id=%d,firstName='%s',lastName='%s',email='%s',address='%s',phoneNumber='%s',borrowedBooks=%s]",
+                id, firstName,lastName,email,address,phoneNumber,borrowedBooks
         );
     }
+
 
 }

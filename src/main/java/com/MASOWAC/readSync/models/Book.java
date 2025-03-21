@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
-    @Size(min=4, max=4)
+
     private int publishedYear;
     private boolean available;
 
@@ -27,6 +28,7 @@ public class Book {
 //    Many to many between books and readers ie a reader can borrow many books
 //    and a book can be borrowed by many readers
     @ManyToMany(mappedBy="borrowedBooks")
+    @JsonIgnore
     private Set<Reader> readers = new HashSet<>();
 
 //    Many to one relationship between the book amd publisher
@@ -97,16 +99,17 @@ public class Book {
         this.publisher =publisher;
     }
 
-    public Set<Reader>getReader(){
+    public Set<Reader>getReaders(){
         return readers;
     }
     public void setReaders(Set<Reader>readers){
         this.readers=readers;
     }
+
     public String toString(){
         return String.format(
-                "Book[id = %d, title ='%s', author ='%s', isbn ='%s', publishedYear =%d, available=%b,publisher='%s']",
-                id,title,author,isbn,publishedYear,available,publisher.getPublisherName()
+                "Book[id = %d, title ='%s', author ='%s', isbn ='%s', publishedYear =%d, available=%b,publisher='%s',readers='%s']",
+                id,title,author,isbn,publishedYear,available,publisher.getPublisherName(), readers
                 );
     }
 

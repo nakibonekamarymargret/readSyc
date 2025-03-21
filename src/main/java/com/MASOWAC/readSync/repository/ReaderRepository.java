@@ -11,6 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface ReaderRepository  extends JpaRepository<Reader, Long>, JpaSpecificationExecutor<Reader> {
-List<Reader> findAll(Specification<Reader> specification);
 
 }

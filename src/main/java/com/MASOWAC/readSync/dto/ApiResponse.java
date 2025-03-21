@@ -12,7 +12,12 @@ public class ApiResponse<T> {
     private String path;
 
     // Getters and Setters
-
+    public ApiResponse(int errorCode, String message) {
+        this.success = false;
+        this.errorCode = errorCode;
+        this.message = message;
+        this.timestamp = System.currentTimeMillis(); // Set current timestamp
+    }
     public boolean isSuccess() {
         return success;
     }
