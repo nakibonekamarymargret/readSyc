@@ -2,21 +2,27 @@ package com.MASOWAC.readSync.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Entity
-@Table(name="file_table")
+@Table(name="file-table")
 public class UploadedFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
-    @Column(columnDefinition ="BLOB")
-    private byte[] file;
+    private String fileName;
+    private String fileUrl;
+
+    @Column(name = "upload_time")
+    private LocalDateTime uploadTime = LocalDateTime.now();
 
     public UploadedFile(){}
 
-    public UploadedFile(byte[] file) {
-        this.file = file;
+    public UploadedFile(String fileName,String fileUrl) {
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
     }
 
     public Long getId(){
@@ -25,10 +31,32 @@ public class UploadedFile {
     public void setId(Long id){
         this.id =id;
     }
-    public byte[] getFile(){
-        return file;
+    public String getFileName(){
+        return fileName;
     }
-    public void setFile(byte[] file){
-        this.file =file;
+    public void setFileName(String  fileName){
+        this.fileName =fileName;
+    }
+    public String getFileUrl(){
+        return fileUrl;
+    }
+    public void setFileUrl(String  fileUrl){
+        this.fileUrl =fileUrl;
+    }
+
+    public  LocalDateTime getUploadedTime(){
+        return uploadTime;
+    }
+    public void setUploadedTime(LocalDateTime uploadTime){
+        this.uploadTime =uploadTime;
+    }
+
+    public String toString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        return String.format(
+                "UploadedFile[id=%d, fileName='%s',fileUrl='%s',uploadedTime= '%s']",
+                id,fileName,fileUrl,uploadTime.format(formatter)
+        );
     }
 }

@@ -35,7 +35,7 @@ public class Book {
 //    Many books are  published by one publisher
 //     @JoinColumn when a book is created, it is assigned to its publisher
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "publisher_id", nullable = false)
 //    @JsonBackReference
 //    @JsonIgnore
