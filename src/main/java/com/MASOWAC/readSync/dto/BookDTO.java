@@ -1,40 +1,25 @@
-package com.MASOWAC.readSync.models;
+package com.MASOWAC.readSync.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "book_seq")
-    @SequenceGenerator(name = "book_seq", sequenceName = "book_id_seq", allocationSize = 1)
+public class BookDTO {
     private Long id;
     private String title;
     private String author;
     private String isbn;
     private int publishedYear;
     private boolean available;
+//    private Publisher publisher;
 
-    //    Relationships
-
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "publisher_id", nullable = false)
-
-    private Publisher publisher;
-
-    public Book() {
-    }
-
-    public Book(String title, String author, String isbn, int publishedYear, boolean available) {
+    public BookDTO(Long id, String title, String author, String isbn, int publishedYear, boolean available) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.publishedYear = publishedYear;
         this.available = available;
+//        this.publisher = publisher;
     }
 
     public void setId(Long id) {
@@ -85,19 +70,5 @@ public class Book {
         this.available = available;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(Publisher publisher) {
-        this.publisher = publisher;
-    }
-
-    public String toString() {
-        return String.format(
-                "Book[id = %d, title ='%s', author ='%s', isbn ='%s', publishedYear =%d, available=%b,publisher='%s']",
-                id, title, author, isbn, publishedYear, available, publisher.getPublisherName()
-        );
-    }
 
 }

@@ -1,8 +1,6 @@
 package com.MASOWAC.readSync.controllers;
 
-import com.MASOWAC.readSync.models.Borrow;
 import com.MASOWAC.readSync.models.Publisher;
-import com.MASOWAC.readSync.services.BorrowService;
 import com.MASOWAC.readSync.services.PublisherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +29,7 @@ public class PublisherController {
     }
 
     // Get all publishers
-    @GetMapping("/publisher/{id}")
+    @GetMapping
     public ResponseEntity<List<Publisher>> getAllPublishers() {
         return ResponseEntity.ok(publisherService.getAllPublishers());
     }

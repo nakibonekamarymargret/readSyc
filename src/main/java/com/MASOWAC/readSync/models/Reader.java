@@ -1,5 +1,7 @@
 package com.MASOWAC.readSync.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -43,11 +45,6 @@ public class Reader {
     //    Relationships
 //    Many to many between books and readers ie a reader can borrow many books
 //    and a book can be borrowed by many readers
-    @ManyToMany
-    @JoinTable(name = "book_borrow",
-            joinColumns = @JoinColumn(name = "readers_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private Set<Book> borrowedBooks = new HashSet<>();
 
     public Reader(){}
     public Reader( String firstName,String lastName, String email, String address,String phoneNumber){

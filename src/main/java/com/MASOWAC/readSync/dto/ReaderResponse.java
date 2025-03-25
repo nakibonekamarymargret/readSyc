@@ -1,10 +1,11 @@
 package com.MASOWAC.readSync.dto;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
+import com.MASOWAC.readSync.models.Book;
+import com.MASOWAC.readSync.models.Reader;
 
-//THis is a DTO that is used to modify my http response messages
- public class ReaderResponse{
+import java.util.Set;
+
+public class ReaderResponse{
  private Long id;
  private String firstName;
  private String lastName;
@@ -12,13 +13,14 @@ import jakarta.validation.constraints.NotNull;
  private String address;
  private String phoneNumber;
 
- public ReaderResponse(Long id, String firstName,String lastName, String email, String address,String phoneNumber){
-  this.id =id;
-  this.firstName = firstName;
-  this.lastName = lastName;
-  this.email = email;
-  this.address = address;
-  this.phoneNumber = phoneNumber;
+
+ public ReaderResponse(Reader reader) {
+  this.id = reader.getId();
+  this.firstName = reader.getFirstName();
+  this.lastName = reader.getLastName();
+  this.email = reader.getEmail();
+  this.address = reader.getAddress();
+  this.phoneNumber = reader.getPhoneNumber();
  }
  public Long getId(){
   return id;
@@ -55,7 +57,9 @@ import jakarta.validation.constraints.NotNull;
   return phoneNumber;
  }
  public void setPhoneNumber(String phoneNumber){
-  this.address= phoneNumber;
+  this.phoneNumber= phoneNumber;
  }
+
+
 
 }
