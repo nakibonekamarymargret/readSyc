@@ -44,7 +44,7 @@ public class BookController {
 //        }
 //
 //    }
-//Get one book
+//Get one add
     @GetMapping("/{Id}")
     public ResponseEntity<Map<String,Object>>getBooKById(@PathVariable Long Id){
         Optional<Book> book= bookService.getBooKById(Id);
@@ -61,7 +61,7 @@ public class BookController {
         }
     }
 //    Get book by title
-    @GetMapping("/{title}")
+    @GetMapping("/title/{title}")
     public ResponseEntity<Map<String,Object>>getBookByTitle(@PathVariable String title){
         Optional<Book> book = bookService.getBookByTitle(title);
         Map<String,Object>response =new HashMap<>();

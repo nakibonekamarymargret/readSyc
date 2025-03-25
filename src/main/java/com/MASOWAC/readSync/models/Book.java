@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "book_seq")
     @SequenceGenerator(name = "book_seq", sequenceName = "book_id_seq", allocationSize = 1)
     private Long id;
     private String title;

@@ -30,6 +30,7 @@ public class Publisher {
     private Timestamp updatedAt;
 //one to many between the publsher and the book
 //    A book is published by only one publisher
+//    
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
