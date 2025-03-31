@@ -36,7 +36,11 @@ public class ReaderController {
         Pageable pageable = PageRequest.of(page,size,sort);
         return readerService.getAllReaders(pageable);
     }
-
+//Get readers by id
+    @GetMapping("/reader/{id}")
+    public Reader findById(@PathVariable Long id){
+        return readerService.getById(id);
+    }
     @GetMapping("/search")
     public List<Reader> searchReader(@RequestParam String field, @RequestParam String value) {
         return readerService.searchReaderByField(field, value);

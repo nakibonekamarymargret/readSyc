@@ -30,7 +30,12 @@ public class ReaderService {
         return readerRepository.save(reader);
     }
 
-    //
+    //Get reader by id
+    public Reader getById(Long id) {
+        return readerRepository.findById(id)
+                .orElseThrow(() -> new ReaderNotFoundException("Reader not found with id: " + id));
+    }
+
     public List<Reader> searchReaderByField(String field, String value) {
         Specification<Reader> specification = ReaderSpecification.byField(field, value);
         return specification != null ? readerRepository.findAll(specification) : List.of();
@@ -75,7 +80,6 @@ public class ReaderService {
     }
 
     //Returning readers who borrowed books using pagination and sorting
-
 
     public Page<Reader> getAllReaders(Pageable pageable) {
         return readerRepository.findAll(pageable);

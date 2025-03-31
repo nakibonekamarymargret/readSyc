@@ -1,10 +1,14 @@
 package com.MASOWAC.readSync.services;
 
 import com.MASOWAC.readSync.dto.BookDTO;
+import com.MASOWAC.readSync.exceptions.NoBookFoundException;
+import com.MASOWAC.readSync.exceptions.ReaderNotFoundException;
 import com.MASOWAC.readSync.models.Book;
 import com.MASOWAC.readSync.models.Publisher;
+import com.MASOWAC.readSync.models.Reader;
 import com.MASOWAC.readSync.repository.BookRepository;
 import com.MASOWAC.readSync.repository.PublisherRepository;
+import com.MASOWAC.readSync.repository.ReaderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,10 +21,13 @@ import java.util.Optional;
 public class BookService {
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
+    private final ReaderRepository readerRepository;
 
-    public BookService(BookRepository bookRepository, PublisherRepository publisherRepository) {
+
+    public BookService(BookRepository bookRepository, PublisherRepository publisherRepository, ReaderRepository readerRepository) {
         this.bookRepository = bookRepository;
         this.publisherRepository = publisherRepository;
+        this.readerRepository = readerRepository;
 
     }
 
@@ -34,11 +41,9 @@ public class BookService {
         if (publisherOptional.isEmpty()) {
             throw new IllegalArgumentException("Publisher not found with ID: " + book.getPublisher().getId());
         }
-
         book.setPublisher(publisherOptional.get()); // Set the fetched Publisher object
         return bookRepository.save(book);
     }
-
 
     //Return all books
     public Page<Book> getAllBooks(Pageable pageable) {
@@ -51,6 +56,7 @@ public class BookService {
     }
 
     //    Updating and patching books
+// Updating a book
     public Book updateBook(Long Id, Book bookDetails) {
         try {
             return bookRepository.findById(Id).map(book -> {
@@ -67,6 +73,17 @@ public class BookService {
                 if (bookDetails.getPublishedYear() > 0) {
                     book.setPublishedYear(bookDetails.getPublishedYear());
                 }
+
+                // Check if publisher is provided and update it
+                if (bookDetails.getPublisher() != null && bookDetails.getPublisher().getId() != null) {
+                    Optional<Publisher> publisherOptional = publisherRepository.findById(bookDetails.getPublisher().getId());
+                    if (publisherOptional.isPresent()) {
+                        book.setPublisher(publisherOptional.get()); // Set the fetched Publisher object
+                    } else {
+                        throw new IllegalArgumentException("Publisher not found with ID: " + bookDetails.getPublisher().getId());
+                    }
+                }
+
                 // Save and return the updated book
                 return bookRepository.save(book);
             }).orElseThrow(() -> new RuntimeException("Book not found"));
@@ -76,15 +93,7 @@ public class BookService {
         }
     }
 
-    //    public Book updateUser(Long id, Book bookDetails) {
-//        return bookRepository.findById(id).map(book -> {
-//                    // Map non-null properties from userDetails to user
-//                    modelMapper.map(bookDetails, book);
-//                    return bookRepository.save(book);
-//                })
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//    }
-//deleting a book
+    //deleting a book
     public void deleteBook(Long Id) {
         bookRepository.deleteById(Id);
     }
@@ -96,18 +105,33 @@ public class BookService {
     public List<Book> getBooksByPublisher(Long publisherId) {
         return bookRepository.findByPublisherId(publisherId);
     }
+//Relationships getting books borrowed by readers
+
+    public Reader borrowBook(Long readerId, Long bookId) {
+
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoBookFoundException("Book not found"));
+        Reader reader = readerRepository.findById(readerId).orElseThrow(() -> new ReaderNotFoundException("Reader not found"));
+        if (reader.getBorrowedBooks().contains(book)) {
+            throw new RuntimeException("Book is currently not available");
+        }
+        reader.getBorrowedBooks().add(book);
+        return readerRepository.save(reader);
+    }
 
     public Page<Book> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable);
     }
-    public List<Book>getBookByPublishedYear(int publishedYear,Pageable pageable){
+
+    public List<Book> getBookByPublishedYear(int publishedYear, Pageable pageable) {
         return bookRepository.findBookByPublishedYear(publishedYear, pageable);
     }
+
     public Page<BookDTO> getAllBooksWithoutPublisher(Pageable pageable) {
         return bookRepository.findAllBooksWithoutPublisher(pageable);
     }
+
     public List<BookDTO> getBooksByFilters(String title, String author, Integer publishedYear, Boolean available) {
-        List<BookDTO>books= bookRepository.findBooksByFilters(title, author, publishedYear, available);
+        List<BookDTO> books = bookRepository.findBooksByFilters(title, author, publishedYear, available);
         if (books.isEmpty()) {
             List<String> filterConditions = new ArrayList<>();
 

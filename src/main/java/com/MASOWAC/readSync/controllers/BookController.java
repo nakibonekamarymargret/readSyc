@@ -2,6 +2,7 @@ package com.MASOWAC.readSync.controllers;
 
 import com.MASOWAC.readSync.dto.BookDTO;
 import com.MASOWAC.readSync.models.Book;
+import com.MASOWAC.readSync.models.Reader;
 import com.MASOWAC.readSync.services.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,6 +65,12 @@ public class BookController {
             response.put("message", "Book with title '" + title + "' not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+    }
+
+    //Get Borrowed books
+    @PostMapping("/{bookId}/borrow/{readerId}")
+    public ResponseEntity<Reader> borrowBook(@PathVariable Long bookId,@PathVariable Long readerId) {
+        return ResponseEntity.ok(bookService.borrowBook(readerId, bookId));
     }
 
     //Get sorted books
